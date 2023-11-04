@@ -7,4 +7,10 @@
 not working anymore
 <%= link_to 'Delete', @page, method: :delete %>
 -->
+
+
 <%= link_to 'Delete', @page, data: {turbo_method: :delete, turbo_confirm: "Are you sure?"} %>
+
+<!--
+<%= button_to 'Delete', @page, method: :delete, data: { turbo_confirm: "Are you sure?" } %>
+-->
