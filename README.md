@@ -82,3 +82,26 @@ As with the previous lesson, there are some differences in the Treehouse videos 
   Like in the previous video, you will not see an error message when you click the Delete link immediately after adding it to the view, so continue with the video.
 
 You are done with it when you have completed that last video. The Active Record Associations in Rails video also involves several other Rails applications, and there are separate assignments and git repositories for those.  They are the community, periodical, and mdb repositories.  You should submit one assignment with links to all four pull requests.
+
+
+
+Back in views/posts/show.html.erb, we can call render with a partial: argument to render the partial:
+
+  <% @post.comments.each do |comment| %>
+    <%= render partial: "comments/comment", locals: {comment: comment} %>
+  <% end %>
+render will look in the posts/ by default, so we need to add comments/ on front of partial name
+We leave underscore out of file name in partial: argument, .html.erb is added automatically
+locals: argument takes a hash with the names and values of local variables to set when rendering partial
+There's a simpler way to do the same thing: we can loop through a collection and render a partial for each using render's collection: argument:
+
+  <%= render partial: "comments/comment", collection: @post.comments, as: :comment %>
+as: argument takes symbol with name of local variable to assign
+The collection: argument automatically assigns current member to local variable with same name as the partial, so we can remove as: :comment:
+
+  <%= render partial: "comments/comment", collection: @post.comments %>
+And here's the ultimate shortcut... we can pass just @post.comments to render.
+
+  <%= render @post.comments %>
+render realizes you're passing it a collection, so it's as if you're passing it as the collection: argument.
+Also no need for a partial: argument. render sees Comment objects in the collection, so it looks in the views/comments folder for a partial named _comment.

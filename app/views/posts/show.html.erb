@@ -12,12 +12,25 @@
 
 <div id="comments">
   <h1>Comments</h1>
-  <!-- The `comments` method returns an array-like collection, so we can call `each` on it: -->
+
+   <%= render @post.comments %>
+
+  
+  <!--
+  render partial: "comments/comment", locals: {comment: comment} 
+  render partial: "comments/comment", collection: @post.comments, as: :comment
+  render partial: "comments/comment", collection: @post.comments
+  The `comments` method returns an array-like collection, so we can call `each` on it: -->
+  <!--
+  we can loop through a collection and render a partial for each using render's collection: argument
   <% @post.comments.each do |comment| %>
+    -->
+    <!-- we'll move this code in partiald (view/comments/_comment.html.erb)
     <div>
       <strong><%= comment.name %> says:</strong>
       <%= comment.content %>
     </div>
+    -->
   <% end %>
 </div>
 
