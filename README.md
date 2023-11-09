@@ -85,6 +85,10 @@ You are done with it when you have completed that last video. The Active Record 
 
 
 
+
+
+
+
 Back in views/posts/show.html.erb, we can call render with a partial: argument to render the partial:
 
   <% @post.comments.each do |comment| %>
@@ -105,3 +109,6 @@ And here's the ultimate shortcut... we can pass just @post.comments to render.
   <%= render @post.comments %>
 render realizes you're passing it a collection, so it's as if you're passing it as the collection: argument.
 Also no need for a partial: argument. render sees Comment objects in the collection, so it looks in the views/comments folder for a partial named _comment.
+
+
+code for deleting from video  <%= link_to "Delete", [@post, comment], method: :delete %>
