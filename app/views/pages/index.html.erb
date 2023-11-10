@@ -1,0 +1,62 @@
+<h1>Blog Pages</h1>
+
+<!-- code with links -->
+<% @pages.each do |page| %>
+  <p><%= link_to page.title, page  %></p>
+<% end %>
+
+<%= link_to 'New Page', new_page_path %>
+
+
+
+<!--
+<% @pages.each do |page| %>
+  <p><%= link_to page.title, page_path(page) %></p>
+<% end %>
+-->
+
+<!--
+<% @pages.each do |page| %>
+  <p>
+    <%= link_to page.title, "/pages/#{page.id}" %>
+  </p>
+<% end %>
+-->
+
+<!-- code without links -->
+<!--
+<% @pages.each do |page| %>
+  <p>
+    <%= page.title %>
+  </p>
+<% end %>
+-->
+
+<!-- embeded tag -->
+<!--
+<%= @pages.first.title%>
+-->
+
+<!-- regular embeded tag. Uses for things like conditionals and loops -->
+
+<!-- conditionals -->
+<!--
+<% grade = 97 %>
+<% if grade > 60 %>
+  You passed!
+<% end %>
+-->
+
+<!--
+<% grade = 54 %>
+<% if grade > 60 %>
+  You passed!
+<% end %>
+--> 
+
+<!-- loops -->
+<!--
+<% 4.times do |index| %>
+  <p><%= index %> fish</p>
+<% end %>
+--> 
