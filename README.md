@@ -112,3 +112,32 @@ Also no need for a partial: argument. render sees Comment objects in the collect
 
 
 code for deleting from video  <%= link_to "Delete", [@post, comment], method: :delete %>
+
+
+There are more useful methods you can call on an association. We'd like to show you a few of these now.
+
+Suppose we have a new Post that doesn't have any Comments yet. We can use the present? and empty? methods to check whether comments are present:
+
+post = Post.create(title: "Newest post")
+Post.last.comments
+Post.last.comments.empty? # => true
+Post.last.comments.present? # => false
+Any method we can use in the Rails console can be used in a controller or view as well. The empty? or present? methods can be used to change what your view renders when a collection is empty.
+
+Only rendering <h1>Comments</h1> if comments present
+views/posts/show.html.erb
+
+  <% if @post.comments.present? %>
+    <h1>Comments</h1>
+    <%= render @post.comments %>
+  <% end %>
+The size method lets you check the number of records in a collection.
+
+2.3.0 :001 > Post.first.comments
+ => #<ActiveRecord::Associations::CollectionProxy [#<Comment id: 1, content: "Hi", name: "Alena", post_id: 1, created_at: "2017-10-02 01:01:33", updated_at: "2017-10-02 01:01:33">, #<Comment id: 2, content: "Nice post!", name: "Jay", post_id: 1, created_at: "2017-10-02 21:50:17", updated_at: "2017-10-02 21:50:17">, #<Comment id: 3, content: "Cool!", name: "Pasan", post_id: 1, created_at: "2017-10-02 21:50:34", updated_at: "2017-10-02 21:50:34">]>
+2.3.0 :003 > Post.first.comments.size
+ => 3
+Active Record adds a where method to associations that allows you to further filter the set of results. For example, we've got comments on the first post from several different authors. If I wanted to limit that to comments where the name field was "Alena", I could write Post.first.comments.where(name: "Alena"):
+
+2.3.0 :004 > Post.first.comments.where(name: "Alena")
+ => #<ActiveRecord::AssociationRelation [#<Comment id: 1, content: "Hi", name: "Alena", post_id: 1, created_at: "2017-10-02 01:01:33", updated_at: "2017-10-02 01:01:33">]>
