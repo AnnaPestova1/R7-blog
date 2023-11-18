@@ -82,3 +82,62 @@ As with the previous lesson, there are some differences in the Treehouse videos 
   Like in the previous video, you will not see an error message when you click the Delete link immediately after adding it to the view, so continue with the video.
 
 You are done with it when you have completed that last video. The Active Record Associations in Rails video also involves several other Rails applications, and there are separate assignments and git repositories for those.  They are the community, periodical, and mdb repositories.  You should submit one assignment with links to all four pull requests.
+
+
+
+
+
+
+
+Back in views/posts/show.html.erb, we can call render with a partial: argument to render the partial:
+
+  <% @post.comments.each do |comment| %>
+    <%= render partial: "comments/comment", locals: {comment: comment} %>
+  <% end %>
+render will look in the posts/ by default, so we need to add comments/ on front of partial name
+We leave underscore out of file name in partial: argument, .html.erb is added automatically
+locals: argument takes a hash with the names and values of local variables to set when rendering partial
+There's a simpler way to do the same thing: we can loop through a collection and render a partial for each using render's collection: argument:
+
+  <%= render partial: "comments/comment", collection: @post.comments, as: :comment %>
+as: argument takes symbol with name of local variable to assign
+The collection: argument automatically assigns current member to local variable with same name as the partial, so we can remove as: :comment:
+
+  <%= render partial: "comments/comment", collection: @post.comments %>
+And here's the ultimate shortcut... we can pass just @post.comments to render.
+
+  <%= render @post.comments %>
+render realizes you're passing it a collection, so it's as if you're passing it as the collection: argument.
+Also no need for a partial: argument. render sees Comment objects in the collection, so it looks in the views/comments folder for a partial named _comment.
+
+
+code for deleting from video  <%= link_to "Delete", [@post, comment], method: :delete %>
+
+
+There are more useful methods you can call on an association. We'd like to show you a few of these now.
+
+Suppose we have a new Post that doesn't have any Comments yet. We can use the present? and empty? methods to check whether comments are present:
+
+post = Post.create(title: "Newest post")
+Post.last.comments
+Post.last.comments.empty? # => true
+Post.last.comments.present? # => false
+Any method we can use in the Rails console can be used in a controller or view as well. The empty? or present? methods can be used to change what your view renders when a collection is empty.
+
+Only rendering <h1>Comments</h1> if comments present
+views/posts/show.html.erb
+
+  <% if @post.comments.present? %>
+    <h1>Comments</h1>
+    <%= render @post.comments %>
+  <% end %>
+The size method lets you check the number of records in a collection.
+
+2.3.0 :001 > Post.first.comments
+ => #<ActiveRecord::Associations::CollectionProxy [#<Comment id: 1, content: "Hi", name: "Alena", post_id: 1, created_at: "2017-10-02 01:01:33", updated_at: "2017-10-02 01:01:33">, #<Comment id: 2, content: "Nice post!", name: "Jay", post_id: 1, created_at: "2017-10-02 21:50:17", updated_at: "2017-10-02 21:50:17">, #<Comment id: 3, content: "Cool!", name: "Pasan", post_id: 1, created_at: "2017-10-02 21:50:34", updated_at: "2017-10-02 21:50:34">]>
+2.3.0 :003 > Post.first.comments.size
+ => 3
+Active Record adds a where method to associations that allows you to further filter the set of results. For example, we've got comments on the first post from several different authors. If I wanted to limit that to comments where the name field was "Alena", I could write Post.first.comments.where(name: "Alena"):
+
+2.3.0 :004 > Post.first.comments.where(name: "Alena")
+ => #<ActiveRecord::AssociationRelation [#<Comment id: 1, content: "Hi", name: "Alena", post_id: 1, created_at: "2017-10-02 01:01:33", updated_at: "2017-10-02 01:01:33">]>
